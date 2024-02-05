@@ -4,3 +4,8 @@ def add_number(a, b, c):
 
 def calc_difference(a, b):
     return a - b
+
+
+def multiple(a, b):
+    return a * b
+
