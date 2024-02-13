@@ -1,3 +1,3 @@
 """An example file."""
 
-print("Hello")
+print("Hello!")
