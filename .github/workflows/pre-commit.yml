@@ -37,14 +37,14 @@ jobs:
       - name: Dump GitHub context
         run: echo ${{ toJSON(github) }}
       - name: Dump job context
-        run: echo ${{ toJSON(jon)
+        run: echo ${{ toJSON(jon) }}
       - name: Dump job context
-        run: echo ${{ toJSON(jon)
+        run: echo ${{ toJSON(jon) }}
       - name: Dump steps context
-        run: echo ${{ toJSON(steps)
+        run: echo ${{ toJSON(steps) }}
       - name: Dump runner context
-        run: echo ${{ toJSON(runner)
+        run: echo ${{ toJSON(runner) }}
       - name: Dump strategy context
-        run: echo ${{ toJSON(strategy)
+        run: echo ${{ toJSON(strategy) }}
       - name: Dump matrix context
-        run: echo ${{ toJSON(matrix)
+        run: echo ${{ toJSON(matrix) }}
