@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Greeting
-        run: Hello!
+        run: echo Hello!
       - name: Dump GitHub context
         run: echo ${{ toJSON(github) }}
       - name: Dump job context
