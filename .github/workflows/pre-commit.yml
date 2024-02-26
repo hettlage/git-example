@@ -38,8 +38,8 @@ jobs:
         run: echo Hello!
       - name: Dump GitHub context
         run: echo '${{ toJSON(github) }}'
-      - name: Dump job context
-        run: echo '${{ toJSON(job) }}'
+      - name: Dump secrets context
+        run: echo '${{ toJSON(secrets) }}'
       - name: Dump steps context
         run: echo '${{ toJSON(steps) }}'
       - name: Dump runner context
