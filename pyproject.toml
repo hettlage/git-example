@@ -2,7 +2,7 @@
 requires = ["setuptools", "wheel"]
 
 [project]
-name = "packaging_demo_hettlage"
+name = "packaging-demo-hettlage"
 authors = [
     {name = "John Doe", email = "john@example.com"},
 ]
