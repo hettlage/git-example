@@ -25,7 +25,7 @@ dev = ["ruff", "mypy", "black"]
 release = ["build", "twine"]
 color = ["rich"]
 statuc-code-qa = ["pre-commit"]
-all = ["packaging-demo[dev,color,release,statuc-code-qa]"]
+all = ["packaging-demo-hettlage[dev,color,release,statuc-code-qa]"]
 
 [project.scripts]
 my-script = "my_package.module:function"
