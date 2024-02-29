@@ -24,6 +24,10 @@ function lint {
     pre-commit run --all-files
 }
 
+function lint:ci {
+    SKIP=no-commit-to-branch pre-commit run --all-files
+}
+
 function publish:test {
   try-load-dotenv || true
   twine upload ${THIS_DIR}/dist/*\
