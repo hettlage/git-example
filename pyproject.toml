@@ -17,6 +17,8 @@ classifiers = [
 dependencies = [
      'fastapi',
 ]
+
+# docs: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html#dynamic-metadata
 [tool.setuptools.dynamic]
 version = { file = "version.txt" }
 
