@@ -13,16 +13,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Set up Python 3.8
       uses: actions/setup-python@v3
       with:
         python-version: 3.8
+    - name: Tag version release
+      run: |
+        git tag $(cat version.txt)
     - name: Install dependencieas
       run: /bin/bash -x run.sh install
     - name: Lint the code
       run: /bin/bash -x run.sh lint:ci
     - name: Build package
       run: /bin/bash -x run.sh build
+    - name: Tag release version
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        git push origin --tags
+      env:
+        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
     - name: Publish to Test PyPI
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: |
