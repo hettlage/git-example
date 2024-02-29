@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencieas
       run: /bin/bash -x run.sh install
     - name: Lint the code
-      run: /bin/bash -x lint:ci
+      run: /bin/bash -x run.sh lint:ci
     - name: Build package
       run: /bin/bash -x run.sh build
     - name: Publish to Test PyPI
