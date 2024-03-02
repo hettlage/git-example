@@ -41,15 +41,15 @@ jobs:
 #        git push origin --tags
 #      env:
 #        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
-    - name: Publish to Test PyPI
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        echo ${{ github.event_name }} ${{ github.ref }}
-        /bin/bash -x run.sh publish:test
-      env:
-        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
-    - name: Publish to Prod PyPI
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: /bin/bash -x run.sh publish:test
-      env:
-        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
+#    - name: Publish to Test PyPI
+#      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#      run: |
+#        echo ${{ github.event_name }} ${{ github.ref }}
+#        /bin/bash -x run.sh publish:test
+#      env:
+#        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
+#    - name: Publish to Prod PyPI
+#      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#      run: /bin/bash -x run.sh publish:test
+#      env:
+#        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
