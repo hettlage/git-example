@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  linting:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -38,10 +38,7 @@ jobs:
         run: |
           git tag $(cat version.txt)
 
-  build-test-and-publish:
-    needs:
-      - linting
-      - check-version-txt
+  build-wheel-and-sdist:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -57,26 +54,50 @@ jobs:
         restore-keys: |
           ${{ runner.ps }}-pip-
     - name: Install dependencies
-      run: /bin/bash -x run.sh install
-    - name: Lint the code
-      run: /bin/bash -x run.sh lint:ci
+      run: pip install build
     - name: Build package
       run: /bin/bash -x run.sh build
-#    - name: Tag release version
-#      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-#      run: |
-#        git push origin --tags
-#      env:
-#        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
-#    - name: Publish to Test PyPI
-#      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-#      run: |
-#        echo ${{ github.event_name }} ${{ github.ref }}
-#        /bin/bash -x run.sh publish:test
-#      env:
-#        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
-#    - name: Publish to Prod PyPI
-#      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-#      run: /bin/bash -x run.sh publish:test
-#      env:
-#        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
+    - name: Upload dist folder
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheel-and-sdist
+        path: ./dist/*
+
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+      - linting
+      - check-version-txt
+      - build-wheel-and-sdist
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: download wheel and sdist
+        uses: actions/download-artifact
+        with:
+          name: wheel-and-sdist
+          path: ./dist
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashfiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.ps }}-pip-
+      - name: Install twine
+        run:
+           pip install twine
+      - name: Publish to Test PyPI
+        run: |
+          echo ${{ github.event_name }} ${{ github.ref }}
+          /bin/bash -x run.sh publish:test
+        env:
+          TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
+#      - name: Publish to Prod PyPI
+#        run: /bin/bash -x run.sh publish:test
+#        env:
+#          TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
