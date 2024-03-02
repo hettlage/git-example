@@ -19,6 +19,13 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: 3.8
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashfiles('**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.ps }}-pip-
     - name: Tag version release
       run: |
         git tag $(cat version.txt)
