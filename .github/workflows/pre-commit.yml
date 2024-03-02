@@ -9,12 +9,42 @@ on:
   workflow_dispatch:
 
 jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashfiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.ps }}-pip-
+      - name: Install pre-commit
+        run:
+           pip install pre-commit
+
+  check-version-txt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Tag with the release version
+        run: |
+          git tag $(cat version.txt)
+
   build-test-and-publish:
+    needs:
+      - linting
+      - check-version-txt
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
     - name: Set up Python 3.8
       uses: actions/setup-python@v3
       with:
@@ -26,10 +56,7 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashfiles('**/pyproject.toml') }}
         restore-keys: |
           ${{ runner.ps }}-pip-
-    - name: Tag version release
-      run: |
-        git tag $(cat version.txt)
-    - name: Install dependencieas
+    - name: Install dependencies
       run: /bin/bash -x run.sh install
     - name: Lint the code
       run: /bin/bash -x run.sh lint:ci
