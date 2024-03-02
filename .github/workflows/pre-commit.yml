@@ -35,12 +35,12 @@ jobs:
       run: /bin/bash -x run.sh lint:ci
     - name: Build package
       run: /bin/bash -x run.sh build
-    - name: Tag release version
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        git push origin --tags
-      env:
-        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
+#    - name: Tag release version
+#      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#      run: |
+#        git push origin --tags
+#      env:
+#        TEST_PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
     - name: Publish to Test PyPI
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: |
