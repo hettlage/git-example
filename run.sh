@@ -28,6 +28,46 @@ function lint:ci {
     SKIP=no-commit-to-branch pre-commit run --all-files
 }
 
+function test:quick {
+  python -m pytest -m "not slow" ${THIS_DIR}/tests \
+        --cov ${THIS_DIR}/packaging_demo \
+        --cov-report html \
+        --cov-report term \
+        --cov-report xml \
+        --cov-fail-under 50 \
+        --junit-xml "${THIS_DIR}/test-reports/report.xml"
+}
+
+function test {
+    python -m pytest "${*:-$THIS_DIR/test}s" \
+        --cov ${THIS_DIR}/packaging_demo \
+        --cov-report html \
+        --cov-report xml \
+        --cov-report term \
+        --cov-fail-under 60 \
+        --junit-xml "${THIS_DIR}/test-reports/report.xml"
+    mv coverage.xml "${THIS_DIR}/test-reports"
+    mv htmlcov "${THIS_DIR}/test-reports"
+}
+
+function test:ci {
+    python -m pip install pytest pytest-cov ./dist/*.whl
+
+    INSTALLED_PKG_DIR="$(python -c 'import packaging_demo; print(packaging_demo.__path__[0])')"
+    python -m pytest "${*:-$THIS_DIR/test}s" \
+        --cov $INSTALLED_PKG_DIR \
+        --cov-report html \
+        --cov-report xml \
+        --cov-fail-under 60 \
+        --junit-xml "${THIS_DIR}/test-reports/report.xml"
+    mv coverage.xml "${THIS_DIR}/test-reports"
+    mv htmlcov "${THIS_DIR}/test-reports"
+}
+
+function serve-coverage-report {
+  python -m http.server --directory "${THIS_DIR}/htmlcov/"
+}
+
 function publish:test {
   try-load-dotenv || true
   twine upload ${THIS_DIR}/dist/*\
