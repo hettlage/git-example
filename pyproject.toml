@@ -34,6 +34,9 @@ all = ["packaging-demo-hettlage[dev,color,release,statuc-code-qa]"]
 [project.scripts]
 my-script = "my_package.module:function"
 
+[tool.setuptools.package-data]
+"packaging_demo.my_folder" = ["*.json"]
+
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -112,3 +115,8 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+
+[tool.pytest.ini_options]
+markers = [
+  "slow: marks tests as slow"
+]
