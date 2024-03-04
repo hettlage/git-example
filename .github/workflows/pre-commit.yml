@@ -43,10 +43,18 @@ jobs:
     needs:
       - build-wheel-and-sdist
     steps:
+      - name: List files
+        run: |
+          ls -l
+          ls -l src || true
       - name: Set up Python 3.8
         uses: actions/setup-python@v3
         with:
           python-version: 3.8
+      - name: List files
+        run: |
+          ls -l
+          ls -l src || true
       - uses: actions/checkout@v3
       - name: Remove package content
         run: |
@@ -85,6 +93,8 @@ jobs:
           ${{ runner.ps }}-pip-
     - name: Install dependencies
       run: pip install build
+    - name: Remove src folder
+      run: rm -r src || true
     - name: Build package
       run: /bin/bash -x run.sh build
     - name: Upload dist folder
