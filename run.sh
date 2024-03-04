@@ -51,7 +51,7 @@ function test {
 }
 
 function test:ci {
-    python -m pip install pytest pytest-cov "${THIS_DIR}/./dist/*.whl"
+    python -m pip install pytest pytest-cov "${THIS_DIR}/dist/*.whl"
 
     ls -l
 
