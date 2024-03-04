@@ -58,7 +58,7 @@ jobs:
           path: ./dist
       - name: Install dependencies
         run: |
-          python -m pip install pytest pytest-cov ./dist/*.whl
+          python -m pip install pytest pytest-cov ./dist/*.whl --force-reinstall
       - name: Run tests
         run: |
           /bin/bash run.sh test:ci
