@@ -53,6 +53,7 @@ function test {
 function test:ci {
     ls -l
 
+    python -m pip install --upgrade pip
     python -m pip install pytest pytest-cov ./dist/*.whl
 
     ls -l "$(python -c 'import pytest; print(pytest.__path__[0])')/.."
