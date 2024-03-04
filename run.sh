@@ -55,7 +55,7 @@ function test:ci {
 
     python -m pip install pytest pytest-cov ./dist/*.whl
 
-    ls -l
+    ls -l "$(python -c 'import pytest; print(pytest.__path__[0])')/.."
 
     INSTALLED_PKG_DIR="$(python -c 'import packaging_demo; print(packaging_demo.__path__[0])')"
     python -m pytest "${*:-$THIS_DIR/test}s" \
