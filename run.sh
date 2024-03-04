@@ -39,7 +39,7 @@ function test:quick {
 }
 
 function test {
-    python -m pytest "${*:-$THIS_DIR/test}s" \
+    python -m pytest "${*:-$THIS_DIR/tests}" \
         --cov ${THIS_DIR}/packaging_demo \
         --cov-report html \
         --cov-report xml \
