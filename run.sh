@@ -54,7 +54,10 @@ function test:ci {
     ls -l
 
     python -m pip install --upgrade pip
+    cp ./dist/packaging_demo_hettlage-0.6.0-py3-none-any.whl ./dist/wheel.tar.gz
+    tar xvfz ./dist/wheel.tar.gz
     python -m pip install pytest pytest-cov ./dist/*.whl
+    python -m pip -V
 
     ls -l "$(python -c 'import pytest; print(pytest.__path__[0])')/.."
 
